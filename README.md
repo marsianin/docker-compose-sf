@@ -5,7 +5,7 @@
 When developing, you can use [Makefile](https://en.wikipedia.org/wiki/Make_(software)) for doing the following operations :
 
 | Name          | Description                                  |
-|---------------|----------------------------------------------|               |
+|---------------|----------------------------------------------|
 | clean         | Clean directories for reset                  |
 | code-sniff    | Check the API with PHP Code Sniffer (`PSR2`) |
 | composer-up   | Update PHP dependencies with composer        |
