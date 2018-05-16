@@ -1,0 +1,61 @@
+version: '3'
+services:
+    web:
+        image: ${WEB_SERVER}:${WEB_SERVER_VERSION}
+        volumes:
+            #for nginx case
+            - "./web:/var/www/html"
+            - "./etc/${WEB_SERVER}/default.conf:/etc/nginx/conf.d/default.conf"
+            #for apache case
+            - "./etc/${WEB_SERVER}/default.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf"
+            - "./etc/${WEB_SERVER}/httpd.conf:/usr/local/apache2/conf/httpd.conf"
+        ports:
+            - "8000:80"
+        environment:
+            - WEB_HOST=${WEB_HOST}
+        restart: always
+        depends_on:
+            - php
+            - mysqldb
+    php:
+        build: "./docker/php/${PHP_MIDDLEWARE}/${PHP_VERSION}"
+        restart: always
+        volumes:
+            - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+            - "./web:/var/www/html"
+    composer:
+        image: "composer"
+        volumes:
+            - "./web/sf:/app"
+        command: install
+    myadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        ports:
+            - "8080:80"
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=${MYSQL_HOST}
+        restart: always
+        depends_on:
+            - mysqldb
+    mysqldb:
+        build: "./docker/mysql/${MYSQL_VERSION}"
+        container_name: ${MYSQL_HOST}
+        restart: always
+        env_file:
+            - ".env"
+        environment:
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        ports:
+            - "8989:3306"
+        volumes:
+            - "./data/db/mysql:/var/lib/mysql"
+
+        deploy:
+          resources:
+            limits:
+              memory: ${MYSQL_MEMORY_LIMIT}

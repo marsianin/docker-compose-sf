@@ -1,0 +1,18 @@
+# Global
+.*.swp
+.DS_Store
+
+# Application
+web/sf/composer.json
+web/sf/composer.lock
+web/sf/vendor/
+web/sf/doc/
+web/sf/report/
+data/
+.env
+
+# PHPStorm
+.idea/
+
+# SSL Certs
+etc/ssl/
