@@ -41,7 +41,6 @@ services:
             - mysqldb
     mysqldb:
         build: "./docker/mysql/${MYSQL_VERSION}"
-        container_name: ${MYSQL_HOST}
         restart: always
         env_file:
             - ".env"
@@ -59,3 +58,13 @@ services:
           resources:
             limits:
               memory: ${MYSQL_MEMORY_LIMIT}
+
+    blackfire:
+      image: blackfire/blackfire
+      environment:
+          # Exposes the host BLACKFIRE_SERVER_ID and TOKEN environment variables.
+          - BLACKFIRE_SERVER_ID=${BLACKFIRE_SERVER_ID}
+          - BLACKFIRE_SERVER_TOKEN=${BLACKFIRE_SERVER_TOKEN}
+          # You can also use global environment credentials :
+          - BLACKFIRE_CLIENT_ID=${BLACKFIRE_CLIENT_ID}
+          - BLACKFIRE_CLIENT_TOKEN=${BLACKFIRE_CLIENT_TOKEN}

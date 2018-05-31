@@ -92,3 +92,6 @@ and
 ```sh
 mysql -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD"
 ```
+
+#### Blackfire
+docker run -it --rm blackfire/blackfire blackfire --client-id=YOUR_CLIENT_ID --client-token=YOUR_TOKEN curl URL
